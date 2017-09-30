@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jusheng.jeeboot.dao.SysRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.jusheng.jeeboot.entity.SysRole" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="office_id" property="officeId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="enname" property="enname" jdbcType="VARCHAR" />
+    <result column="role_type" property="roleType" jdbcType="VARCHAR" />
+    <result column="data_scope" property="dataScope" jdbcType="CHAR" />
+    <result column="is_sys" property="isSys" jdbcType="VARCHAR" />
+    <result column="useable" property="useable" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+
+  <select id="findList" resultType="SysRole" >
+    select
+      a.id,
+      a.name,
+      a.office_id as "officeId",
+      a.description,
+      a.useable,
+      a.create_by as "createBy",
+      a.create_date as "createDate",
+      a.update_by as "updateBy",
+      a.update_date as "updateDate",
+      a.remarks,
+      a.del_flag as "delFlag",
+      b.id as "organ.id",
+      b.name as "organ.name"
+    from sys_role a ,sys_office b
+    where a.office_id=b.id
+    and a.del_flag=0
+    <!--当前的用户只能看到本机构所属下的所有数据-->
+    <if test="currentUser != null and currentUser.companyId !=null and currentUser.companyId !=''">
+    and b.id=#{currentUser.companyId}
+    </if>
+    <if test="name != null and name != ''">
+      AND a.name like CONCAT('%',#{name},'%')
+    </if>
+  </select>
+
+</mapper>

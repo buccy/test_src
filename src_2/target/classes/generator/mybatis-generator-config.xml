@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!--<properties resource="application.properties"/>-->
+
+    <!-- 本地数据库驱动程序jar包的全路径 -->
+    <classPathEntry location="C:\Users\Administrator\.m2\repository\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="com.jusheng.jeeboot.system.BaseMapper"/>
+        </plugin>
+
+        <!--<jdbcConnection driverClass="${druid.driver-class}"-->
+                        <!--connectionURL="${druid.url}"-->
+                        <!--userId="${druid.username}"-->
+                        <!--password="${druid.password}">-->
+        <!--</jdbcConnection>-->
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://210.21.98.98:3306/cool-link"
+                        userId="root"
+                        password="jbgf@qwertyuiop">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.jusheng.jeeboot.entity" targetProject="src/main/java"/>
+
+        <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources"/>
+
+        <javaClientGenerator targetPackage="com.jusheng.jeeboot.dao" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+        <table tableName="biz_box">
+            <!--mysql 配置-->
+            <generatedKey column="id" sqlStatement="select UUID() " identity="true"/>
+            <!--<property name="rootClass" value="com.jusheng.jeeboot.entity.BaseEntity"/>-->
+            <!--oracle 配置-->
+            <!--<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>-->
+        </table>
+    </context>
+</generatorConfiguration>

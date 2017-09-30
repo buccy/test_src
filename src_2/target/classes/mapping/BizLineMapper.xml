@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jusheng.jeeboot.dao.BizLineMapper">
+  <resultMap id="BaseResultMap" type="com.jusheng.jeeboot.entity.BizLine">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="manager_id" jdbcType="BIGINT" property="managerId" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="back_time" jdbcType="INTEGER" property="backTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="area_id" jdbcType="BIGINT" property="areaId" />
+    <result column="office_id" jdbcType="VARCHAR" property="officeId" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+  </resultMap>
+
+  <select id="findList" resultType="BizLine" >
+    select
+    a.id,
+    a.code,
+    a.name,
+    a.manager_id as "managerId",
+    a.region_id as "regionId",
+    a.back_time as "backTime",
+    a.status,
+    a.remark,
+    a.area_id as "areaId",
+    a.office_id as "officeId",
+    b.id as "worker.id",
+    b.name as "worker.name",
+    c.id AS "area.id",
+    c.name AS "area.name"
+
+    from biz_line a ,biz_worker b,sys_area c
+    where a.manager_id=b.id AND  a.area_id=c.id
+
+
+    <!--当前的用户只能看到本机构所属下的所有数据-->
+    <if test="currentUser != null and currentUser.companyId !=null and currentUser.companyId !=''">
+      and b.id=#{currentUser.companyId}
+    </if>
+    <if test="name != null and name != ''">
+      AND a.name like CONCAT('%',#{name},'%')
+    </if>
+  </select>
+</mapper>

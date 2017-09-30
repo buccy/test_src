@@ -1,0 +1,7 @@
+{
+  "name": "specimen",
+  "title":"specimenAPI",
+  "description":"specimenAPI接口文档",
+  "url" : "http://api.demo.com",
+  "version": "0.1.0"
+}
